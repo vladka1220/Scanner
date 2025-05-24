@@ -45,9 +45,17 @@ file.
 
 ## 4. Running Checks
 
-You can build the project and run Go tests with:
+Before running checks, ensure all dependencies are downloaded:
+
+```sh
+go mod download
+```
+
+Then build the project and execute the tests:
 
 ```sh
 go build ./...
 go test ./...
 ```
+
+`go test` needs network access to fetch modules, so some tests may fail if the environment is offline.

@@ -37,3 +37,8 @@
 Что сделать:
 
 // Надо поправить pump_monitor, разбить на файлы, все в куче и не удобно
+## Running Tests
+
+Before running tests, download dependencies with `go mod download`.
+Execute the test suite with `go test ./...`. Network access is required so the Go tool can fetch modules.
+The current coverage focuses on utility helpers, funding formatting, Telegram notifications, and pump analysis.
