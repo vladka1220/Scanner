@@ -71,12 +71,12 @@ func ComparePrices(prices types.TokenPrices) {
 			nextFundingTime = r.f2.FundingTime
 		}
 		timeUntil := funding.FormatNextFundingTime(nextFundingTime)
-
-		fmt.Printf("[%s]\n- %s (%s) → %s (%s, ∆Фандинг: %.3f%%, через %s) | %.6f → %.6f | Спред: %.2f%%\n",
+		net := utils.NetSpread(r.spread, utils.DefaultMakerFeePercent, utils.DefaultTakerFeePercent, fundingDiff)
+		fmt.Printf("[%s]\n- %s (%s) → %s (%s, ∆Фандинг: %.3f%%, через %s) | %.6f → %.6f | Спред: %.2f%% (Чистый: %.2f%%)\n",
 			r.token,
 			r.ex1, r.t1,
 			r.ex2, r.t2, fundingDiff, timeUntil,
-			r.p1, r.p2, r.spread)
+			r.p1, r.p2, r.spread, net)
 	}
 	fmt.Println("====================================")
 }

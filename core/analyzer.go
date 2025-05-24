@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"basis_go/types"
+	"basis_go/utils"
 )
 
 func typeName(p types.ExchangePrice) string {
@@ -50,10 +51,15 @@ func CompareAll(prices types.TokenPrices) {
 						printed = true
 					}
 
-					fmt.Printf("- %s (%s) → %s (%s) | %.6f → %.6f | Спред: %.2f%%%s%s\n",
+					var fundingDiff float64
+					if p1.IsFutures || p2.IsFutures {
+						fundingDiff = (p2.FundingRate - p1.FundingRate) * 100
+					}
+					net := utils.NetSpread(spread, utils.DefaultMakerFeePercent, utils.DefaultTakerFeePercent, fundingDiff)
+					fmt.Printf("- %s (%s) → %s (%s) | %.6f → %.6f | Спред: %.2f%% (Чистый: %.2f%%)%s%s\n",
 						ex1, typeName(p1),
 						ex2, typeName(p2),
-						p1.Price, p2.Price, spread,
+						p1.Price, p2.Price, spread, net,
 						fundingInfo(p1), fundingInfo(p2),
 					)
 				}
