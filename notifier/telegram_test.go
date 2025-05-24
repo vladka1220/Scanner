@@ -48,3 +48,12 @@ func TestSendTelegramMessage(t *testing.T) {
 		t.Fatalf("unexpected form: %v", captured)
 	}
 }
+
+func TestSendTelegramMessageMissingEnv(t *testing.T) {
+	os.Unsetenv("TELEGRAM_BOT_TOKEN")
+	os.Unsetenv("TELEGRAM_CHAT_ID")
+
+	if err := SendTelegramMessage("hi"); err == nil {
+		t.Fatalf("expected error when env vars are unset")
+	}
+}
