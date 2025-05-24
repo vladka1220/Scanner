@@ -24,6 +24,7 @@ func FetchJSON(url string) ([]byte, error) {
 func NormalizeSymbol(symbol string) string {
 	symbol = strings.ToUpper(symbol)
 	symbol = strings.ReplaceAll(symbol, "_", "")
+	symbol = strings.ReplaceAll(symbol, "/", "")
 	if strings.HasSuffix(symbol, "USDT") {
 		return strings.TrimSuffix(symbol, "USDT") + "/USDT"
 	}
