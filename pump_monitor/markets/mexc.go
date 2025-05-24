@@ -8,6 +8,11 @@ import (
 	"time"
 )
 
+var (
+	mexcTickersURL      = "https://api.mexc.com/api/v3/ticker/24hr"
+	mexcRecentTradesURL = "https://api.mexc.com/api/v3/trades?symbol=%s"
+)
+
 type MEXCSpotTicker struct {
 	Symbol    string `json:"symbol"`
 	LastPrice string `json:"lastPrice"`
@@ -22,7 +27,7 @@ type Trade struct {
 }
 
 func FetchMEXCTickers() (map[string]types.PriceInfo, error) {
-	url := "https://api.mexc.com/api/v3/ticker/24hr"
+	url := mexcTickersURL
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Get(url)
 	if err != nil {
@@ -53,7 +58,7 @@ func FetchMEXCTickers() (map[string]types.PriceInfo, error) {
 }
 
 func FetchRecentTrades(symbol string) ([]Trade, error) {
-	url := fmt.Sprintf("https://api.mexc.com/api/v3/trades?symbol=%s", symbol)
+	url := fmt.Sprintf(mexcRecentTradesURL, symbol)
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Get(url)
 	if err != nil {
