@@ -80,7 +80,9 @@ func CompareSpotFutures(spotPrices, futuresPrices types.TokenPrices) {
 	}
 
 	for _, r := range results[:limit] {
-		net := utils.NetSpread(r.spread, utils.DefaultMakerFeePercent, utils.DefaultTakerFeePercent, 0)
+		makerFee := utils.GetFees(r.ex1).Maker
+		takerFee := utils.GetFees(r.ex2).Taker
+		net := utils.NetSpread(r.spread, makerFee, takerFee, 0)
 		fmt.Printf("[%s]\n- %s (%s, %s) → %s (%s, %s) | %.6f → %.6f | Спред: %.2f%% (Чистый: %.2f%%)\n",
 			r.token,
 			r.ex1, r.t1, formatFunding(r.f1),

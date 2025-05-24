@@ -55,7 +55,9 @@ func CompareAll(prices types.TokenPrices) {
 					if p1.IsFutures || p2.IsFutures {
 						fundingDiff = (p2.FundingRate - p1.FundingRate) * 100
 					}
-					net := utils.NetSpread(spread, utils.DefaultMakerFeePercent, utils.DefaultTakerFeePercent, fundingDiff)
+					makerFee := utils.GetFees(ex1).Maker
+					takerFee := utils.GetFees(ex2).Taker
+					net := utils.NetSpread(spread, makerFee, takerFee, fundingDiff)
 					fmt.Printf("- %s (%s) → %s (%s) | %.6f → %.6f | Спред: %.2f%% (Чистый: %.2f%%)%s%s\n",
 						ex1, typeName(p1),
 						ex2, typeName(p2),
