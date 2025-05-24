@@ -11,7 +11,7 @@ import (
 	"basis_go/types"
 )
 
-func CollectFuturesPrices() types.TokenPrices {
+func CollectFuturesPrices(fetchers ...map[string]func() map[string]types.ExchangePrice) types.TokenPrices {
 	all := make(types.TokenPrices)
 	wg := sync.WaitGroup{}
 	mu := sync.Mutex{}
@@ -29,6 +29,10 @@ func CollectFuturesPrices() types.TokenPrices {
 		"Bybit Futures": func() map[string]types.ExchangePrice {
 			return (&bybit.BybitFutures{}).GetPrices()
 		},
+	}
+
+	if len(fetchers) > 0 && fetchers[0] != nil {
+		sources = fetchers[0]
 	}
 
 	wg.Add(len(sources))
