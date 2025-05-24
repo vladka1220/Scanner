@@ -10,6 +10,11 @@ import (
 	"time"
 )
 
+var (
+	gateTickersURL      = "https://api.gateio.ws/api/v4/spot/tickers"
+	gateRecentTradesURL = "https://api.gate.io/api/v4/spot/trades?currency_pair=%s"
+)
+
 type GateSpotTicker struct {
 	Symbol      string `json:"currency_pair"`
 	Last        string `json:"last"`
@@ -25,7 +30,7 @@ type GateTrade struct {
 }
 
 func FetchGateTickers() (map[string]types.PriceInfo, error) {
-	url := "https://api.gateio.ws/api/v4/spot/tickers"
+	url := gateTickersURL
 
 	client := &http.Client{
 		Timeout: 10 * time.Second,
@@ -87,7 +92,7 @@ func FetchGateTickers() (map[string]types.PriceInfo, error) {
 }
 
 func FetchRecentGateTrades(symbol string) ([]GateTrade, error) {
-	url := fmt.Sprintf("https://api.gate.io/api/v4/spot/trades?currency_pair=%s", symbol)
+	url := fmt.Sprintf(gateRecentTradesURL, symbol)
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Get(url)
 	if err != nil {

@@ -10,7 +10,7 @@ import (
 	"sync"
 )
 
-func CollectSpotPrices() types.TokenPrices {
+func CollectSpotPrices(fetchers ...map[string]func() map[string]types.ExchangePrice) types.TokenPrices {
 	all := make(types.TokenPrices)
 	wg := sync.WaitGroup{}
 	mu := sync.Mutex{}
@@ -20,6 +20,10 @@ func CollectSpotPrices() types.TokenPrices {
 		"MEXC Spot":    mexc.GetSpotPrices,
 		"Gate Spot":    (&gate.GateSpot{}).GetPrices,
 		"Bybit Spot":   bybit.GetSpotPrices,
+	}
+
+	if len(fetchers) > 0 && fetchers[0] != nil {
+		sources = fetchers[0]
 	}
 
 	wg.Add(len(sources))
