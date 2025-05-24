@@ -9,6 +9,11 @@ import (
 	"time"
 )
 
+var (
+	bybitTickersURL      = "https://api.bybit.com/v5/market/tickers?category=spot"
+	bybitRecentTradesURL = "https://api.bybit.com/v5/market/recent-trade?category=spot&symbol=%s"
+)
+
 type BybitSpotTicker struct {
 	Symbol      string `json:"symbol"`
 	LastPrice   string `json:"lastPrice"`
@@ -24,7 +29,7 @@ type BybitTrade struct {
 }
 
 func FetchBybitTickers() (map[string]types.PriceInfo, error) {
-	url := "https://api.bybit.com/v5/market/tickers?category=spot"
+	url := bybitTickersURL
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Get(url)
 	if err != nil {
@@ -71,7 +76,7 @@ func FetchBybitTickers() (map[string]types.PriceInfo, error) {
 }
 
 func FetchRecentBybitTrades(symbol string) ([]BybitTrade, error) {
-	url := fmt.Sprintf("https://api.bybit.com/v5/market/recent-trade?category=spot&symbol=%s", symbol)
+	url := fmt.Sprintf(bybitRecentTradesURL, symbol)
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Get(url)
 	if err != nil {

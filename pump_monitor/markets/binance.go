@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+var binanceTickersURL = "https://api.binance.com/api/v3/ticker/24hr"
+
 type BinanceTicker struct {
 	Symbol string `json:"symbol"`
 	Price  string `json:"lastPrice"`
@@ -16,7 +18,7 @@ type BinanceTicker struct {
 
 func FetchBinanceTickers() (map[string]types.PriceInfo, error) {
 	client := &http.Client{Timeout: 10 * time.Second}
-	resp, err := client.Get("https://api.binance.com/api/v3/ticker/24hr")
+	resp, err := client.Get(binanceTickersURL)
 	if err != nil {
 		return nil, err
 	}
