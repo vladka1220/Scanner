@@ -1,0 +1,24 @@
+stages:
+  - build
+  - test
+
+variables:
+  GO_VERSION: "1.22"
+
+before_script:
+  - echo "Using Go $GO_VERSION"
+  - apk add --no-cache git
+  - go version
+
+build:
+  stage: build
+  image: golang:${GO_VERSION}-alpine
+  script:
+    - go mod download
+    - go build -v ./...
+
+test:
+  stage: test
+  image: golang:${GO_VERSION}-alpine
+  script:
+    - go test -v ./...
